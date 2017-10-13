@@ -1,8 +1,8 @@
-
+package seeds
 
 def gitUrl = 'https://github.com/baber/jenkins-automation.git'
 
-job('api-seed') {
+job('seed') {
     scm {
         git(gitUrl)
     }
@@ -11,7 +11,7 @@ job('api-seed') {
     }
     steps {
         dsl {
-            text(readFileFromWorkspace('jobs/*.groovy'))
+            text(readFileFromWorkspace('jobs/main/*.groovy'))
             removeAction('DELETE')
         }
     }
