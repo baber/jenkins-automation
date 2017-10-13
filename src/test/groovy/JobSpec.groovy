@@ -1,0 +1,45 @@
+import javaposse.jobdsl.dsl.DslScriptLoader
+import javaposse.jobdsl.plugin.JenkinsJobManagement
+import org.junit.ClassRule
+import org.jvnet.hudson.test.JenkinsRule
+import spock.lang.Shared
+import spock.lang.Specification
+import spock.lang.Unroll
+
+class JobScriptsSpec extends Specification {
+    @Shared
+    @ClassRule
+    JenkinsRule jenkinsRule = new JenkinsRule()
+
+    @Unroll
+    def 'test script #file.name'(File file) {
+        given:
+        def jobManagement = new JenkinsJobManagement(System.out, [:], new File('.'))
+        def jenkins = jenkinsRule.jenkins
+
+        when:
+        def jobs = new DslScriptLoader(jobManagement).runScript(file.text).jobs
+        jobs.forEach { job ->
+                String jobName = job.jobName
+                def item = jenkins.getItemByFullName(jobName)
+                def text = new URL(jenkins.rootUrl + item.url + 'config.xml').text
+                println("Job Name: ${jobName}\n ${text}")
+        }
+
+        then:
+        noExceptionThrown()
+
+        where:
+        file << jobFiles
+    }
+
+    static List<File> getJobFiles() {
+        List<File> files = []
+        new File('jobs').eachFileRecurse {
+            if (it.name.endsWith('.groovy')) {
+                files << it
+            }
+        }
+        files
+    }
+}
