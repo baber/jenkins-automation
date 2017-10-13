@@ -1,0 +1,5 @@
+package categories
+
+interface Deploy {
+
+}

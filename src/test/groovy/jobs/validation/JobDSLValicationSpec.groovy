@@ -1,12 +1,17 @@
+package jobs.validation
+
+import categories.Validation
 import javaposse.jobdsl.dsl.DslScriptLoader
 import javaposse.jobdsl.plugin.JenkinsJobManagement
 import org.junit.ClassRule
+import org.junit.experimental.categories.Category
 import org.jvnet.hudson.test.JenkinsRule
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class JobScriptsSpec extends Specification {
+@Category(Validation)
+class JobDSLValicationSpec extends Specification {
     @Shared
     @ClassRule
     JenkinsRule jenkinsRule = new JenkinsRule()
@@ -15,16 +20,9 @@ class JobScriptsSpec extends Specification {
     def 'test script #file.name'(File file) {
         given:
         def jobManagement = new JenkinsJobManagement(System.out, [:], new File('.'))
-        def jenkins = jenkinsRule.jenkins
 
         when:
-        def jobs = new DslScriptLoader(jobManagement).runScript(file.text).jobs
-        jobs.forEach { job ->
-                String jobName = job.jobName
-                def item = jenkins.getItemByFullName(jobName)
-                def text = new URL(jenkins.rootUrl + item.url + 'config.xml').text
-                println("Job Name: ${jobName}\n ${text}")
-        }
+        new DslScriptLoader(jobManagement).runScript(file.text)
 
         then:
         noExceptionThrown()

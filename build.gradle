@@ -1,19 +1,9 @@
 apply plugin: 'groovy'
 
-
 ext {
     jobDslVersion = '1.65'
     jenkinsVersion = '2.19'
 }
-
-sourceSets {
-    jobs {
-        groovy {
-            srcDirs 'jobs/seeds'
-        }
-    }
-}
-
 
 repositories {
     jcenter()
@@ -26,24 +16,29 @@ configurations {
     testPlugins {}
 
     // see JENKINS-45512
-    testCompile {
+    compile {
         exclude group: 'xalan'
         exclude group: 'xerces'
     }
 }
 
 dependencies {
-    testCompile group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4'
+
+    compile 'org.codehaus.groovy:groovy-all:2.4.10'
+
+    compile group: 'commons-httpclient', name: 'commons-httpclient', version: '3.1'
+
+    compile group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4'
 
     // Jenkins test harness dependencies
-    testCompile group: 'org.jenkins-ci.main', name: 'jenkins-test-harness', version: '2.29'
-    testCompile "org.jenkins-ci.main:jenkins-war:${jenkinsVersion}"
-    testCompile "org.jenkins-ci.main:jenkins-war:${jenkinsVersion}:war-for-test@jar"
+    compile group: 'org.jenkins-ci.main', name: 'jenkins-test-harness', version: '2.29'
+    compile "org.jenkins-ci.main:jenkins-war:${jenkinsVersion}"
+    compile "org.jenkins-ci.main:jenkins-war:${jenkinsVersion}:war-for-test@jar"
 
     // Job DSL plugin including plugin dependencies
-    testCompile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}"
-    testCompile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}@jar"
-    testCompile 'org.jenkins-ci.plugins:structs:1.6@jar'
+    compile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}"
+    compile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}@jar"
+    compile 'org.jenkins-ci.plugins:structs:1.6@jar'
 
     // plugins to install in test instance
     testPlugins 'org.jenkins-ci.plugins:ghprb:1.31.4'
@@ -63,9 +58,25 @@ task resolveTestPlugins(type: Copy) {
 }
 
 test {
+    useJUnit {
+        includeCategories 'categories.Validation'
+    }
+
     dependsOn tasks.resolveTestPlugins
-    inputs.files sourceSets.jobs.groovy.srcDirs
+    // set build directory for Jenkins test harness, JENKINS-26331
+    systemProperty 'buildDirectory', project.buildDir.absolutePath
+}
+
+
+task loadSeed(type: Test) {
+
+    useJUnit {
+        includeCategories 'categories.Deploy'
+    }
+
+    dependsOn tasks.resolveTestPlugins
 
     // set build directory for Jenkins test harness, JENKINS-26331
     systemProperty 'buildDirectory', project.buildDir.absolutePath
+
 }
