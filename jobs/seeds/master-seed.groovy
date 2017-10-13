@@ -11,7 +11,7 @@ job('seed') {
     }
     steps {
         dsl {
-            text(readFileFromWorkspace('jobs/main/*.groovy'))
+            external('jobs/main/*.groovy')
             removeAction('DELETE')
         }
     }

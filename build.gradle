@@ -9,7 +9,7 @@ ext {
 sourceSets {
     jobs {
         groovy {
-            srcDirs 'jobs'
+            srcDirs 'jobs/seeds'
         }
     }
 }
