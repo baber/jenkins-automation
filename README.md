@@ -11,5 +11,10 @@ This repository contains:
 
 To verify the jobs in jobs/main run `./gradlew clean test`
 
-To load the seed job into a target jenkins, modify the SeedJobDeploymentSpec code to specify the Jenkins url, user and API key and
-then run `./gradlew loadSeed`
+To load the seed job into a target jenkins set the following environment variables:
+
+ * JENKINS_HOST - the hostname of the jenkins instance you want to load the job into
+ * JENKIN_USER - the jenkins user name to use when making API calls
+ * JENKINS_API_KEY - the jenkins API key
+
+Then run `./gradlew loadSeed`
