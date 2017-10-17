@@ -70,6 +70,9 @@ test {
 
 task loadSeed(type: Test) {
 
+    outputs.upToDateWhen { false }
+    testLogging.showStandardStreams = true
+
     useJUnit {
         includeCategories 'categories.Deploy'
     }

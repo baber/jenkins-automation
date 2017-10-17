@@ -11,7 +11,7 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @Category(Validation)
-class JobDSLValicationSpec extends Specification {
+class JobDSLValidationSpec extends Specification {
     @Shared
     @ClassRule
     JenkinsRule jenkinsRule = new JenkinsRule()
