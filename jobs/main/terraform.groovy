@@ -10,6 +10,6 @@ job('terraform') {
         scm('*/5 * * * *')
     }
     steps {
-        shell('./run_once.sh')
+        shell('./run.sh')
     }
 }
