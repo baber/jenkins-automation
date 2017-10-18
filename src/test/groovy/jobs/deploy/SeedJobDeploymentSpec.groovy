@@ -27,7 +27,7 @@ class SeedJobDeploymentSpec extends Specification {
 
     def static hostName = env['JENKINS_HOST']
     def static rootUrl = "http://${hostName}:8080/"
-    def static username = env['JENKIN_USER']
+    def static username = env['JENKINS_USER']
     def static apiToken = env['JENKINS_API_KEY']
 
 

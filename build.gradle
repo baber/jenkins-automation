@@ -40,9 +40,14 @@ dependencies {
     compile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}@jar"
     compile 'org.jenkins-ci.plugins:structs:1.6@jar'
 
+
     // plugins to install in test instance
     testPlugins 'org.jenkins-ci.plugins:ghprb:1.31.4'
     testPlugins 'com.coravy.hudson.plugins.github:github:1.19.0'
+    testPlugins 'org.jenkins-ci.plugins:s3:0.10.12'
+    testPlugins 'org.jenkins-ci.main:maven-plugin:3.0'
+    testPlugins 'org.jenkins-ci.plugins:aws-java-sdk:1.11.119'
+    testPlugins 'org.jenkins-ci.plugins:copyartifact:1.38.1'
 }
 
 task resolveTestPlugins(type: Copy) {
