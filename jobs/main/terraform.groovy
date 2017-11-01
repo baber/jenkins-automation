@@ -14,7 +14,7 @@ job('terraform') {
     }
     publishers {
         s3BucketPublisher {
-            profileName('S3Test')
+            profileName('default')
             entries {
                 entry {
                     bucket('com.ee.bdec.coderepo')
