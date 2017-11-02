@@ -10,6 +10,6 @@ job('entity-extraction') {
         scm('*/5 * * * *')
     }
     steps {
-        sbt('SBT 1.0.2', 'publish')
+        shell('sbt clean compile test publish')
     }
 }
