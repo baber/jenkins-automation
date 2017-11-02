@@ -2,7 +2,7 @@ package main
 
 def gitUrl = 'https://github.com/baber/terraform-emr.git'
 
-job('terraform') {
+job('emr') {
     scm {
         git(gitUrl)
     }
