@@ -10,6 +10,6 @@ job('spark-entity-extraction') {
         scm('*/5 * * * *')
     }
     steps {
-        shell('sbt clean compile test publish')
+        shell('sbt -mem 2048 clean compile test publish')
     }
 }
