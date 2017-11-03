@@ -18,7 +18,7 @@ job('spark-entity-extraction') {
             entries {
                 entry {
                     bucket('com.ee.bdec.coderepo')
-                    sourceFile('./target/*.jar')
+                    sourceFile('target/*.jar')
                     excludedFile('')
                     storageClass('STANDARD')
                     selectedRegion('eu-west-2')
