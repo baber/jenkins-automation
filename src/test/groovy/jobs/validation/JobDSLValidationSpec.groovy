@@ -28,12 +28,12 @@ class JobDSLValidationSpec extends Specification {
         noExceptionThrown()
 
         where:
-        file << jobFiles
+        file << getJobs('jobs') + getJobs('views')
     }
 
-    static List<File> getJobFiles() {
+    static List<File> getJobs(String path) {
         List<File> files = []
-        new File('jobs').eachFileRecurse {
+        new File(path).eachFileRecurse {
             if (it.name.endsWith('.groovy')) {
                 files << it
             }

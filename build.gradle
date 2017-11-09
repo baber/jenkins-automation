@@ -40,7 +40,6 @@ dependencies {
     compile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}@jar"
     compile 'org.jenkins-ci.plugins:structs:1.6@jar'
 
-
     // plugins to install in test instance
     testPlugins 'org.jenkins-ci.plugins:ghprb:1.31.4'
     testPlugins 'com.coravy.hudson.plugins.github:github:1.19.0'
@@ -48,16 +47,25 @@ dependencies {
     testPlugins 'org.jenkins-ci.main:maven-plugin:3.0'
     testPlugins 'org.jenkins-ci.plugins:aws-java-sdk:1.11.119'
     testPlugins 'org.jenkins-ci.plugins:copyartifact:1.38.1'
+    testPlugins 'org.jenkins-ci.plugins:credentials:2.1.16'
+
 }
 
 task resolveTestPlugins(type: Copy) {
-    from configurations.testPlugins
-    into new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
-    include '*.hpi'
-    include '*.jpi'
 
+
+    from configurations.testPlugins {
+        include '*.hpi'
+        include '*.jpi'
+    }
+
+    from('./src/test/resources/plugins') {
+        include '*.hpi'
+    }
+
+    into new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
     doLast {
-        def baseNames = source.collect { it.name[0..it.name.lastIndexOf('.')-1] }
+        def baseNames = source.collect { it.name[0..it.name.lastIndexOf('.') - 1] }
         new File(destinationDir, 'index').setText(baseNames.join('\n'), 'UTF-8')
     }
 }
