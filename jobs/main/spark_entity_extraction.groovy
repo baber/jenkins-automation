@@ -17,7 +17,7 @@ job('spark-entity-extraction') {
             profileName('default')
             entries {
                 entry {
-                    bucket('com.ee.bdec.coderepo')
+                    bucket('org.hmrc.ccg.radlab.coderepo')
                     sourceFile('target/*.jar')
                     excludedFile('')
                     storageClass('STANDARD')
